@@ -1,16 +1,19 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import Input_container from './components/input/Input_container.jsx'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
+const queryClient = new QueryClient()
 
 function App() {
-  const [count, setCount] = useState(0)
+    const [pokemons, setPokemons] = useState()
 
-  return (
-    <button className='btn'>
-      Useless button
-    </button>
-  )
+    return (
+        <QueryClientProvider client={queryClient}>
+            <button className="btn">Useless button</button>
+            <Input_container></Input_container>
+        </QueryClientProvider>
+    )
 }
 
 export default App
