@@ -1,11 +1,10 @@
 export default class Pokemon{
-    constructor(name, ability, item, moves, sprite, stats, types){
+    constructor(raw, name, ability, item, moves){
+        this.id = self.crypto.randomUUID()
+        this.raw = raw
         this.name = name
         this.ability = ability
         this.item = item
         this.moves = moves
-        this.sprite = sprite
-        this.stats = stats
-        this.types = types
     }
 }
