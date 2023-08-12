@@ -1,24 +1,27 @@
-import React, { useRef, useState } from 'react'
-import Pokemon_ability from '../../../templates/pokemon_ability'
+import React, { useEffect, useRef, useState } from 'react'
 import * as Pokedex from 'pokeapi-js-wrapper'
 
 function Modal_ability({ pokemon }) {
-    const { current_ability, setCurrentAbility } = useState()
     const selectRef = useRef(null)
     const pokedex = new Pokedex.Pokedex()
+    const [abilityName, setAbilityName] = useState(pokemon.ability)
+    const [abilityDesc, setAbilityDesc] = useState('')
 
-    const update_ability = async (ability_name) => {
-        let ability = await pokedex.getAbilityByName(ability_name)
-        ability = new Pokemon_ability(ability)
-        setCurrentAbility(ability)
-    }
+    // TODO: fare un custom hook useFetch seguendo questo: https://blog.bitsrc.io/fetching-data-in-react-using-hooks-c6fdd71cb24a
+    useEffect(() => {
+        async function fetchAbility() {
+            const result = await pokedex.getAbilityByName(abilityName)
+            setAbilityDesc(result.effect_entries[0].short_effect)
+        }
+        fetchAbility()
+    }, [abilityName])
 
     return (
         <div>
             <select
                 className="select select-bordered"
                 ref={selectRef}
-                onChange={() => update_ability(selectRef.current.value)}
+                onChange={() => setAbilityName(selectRef.current.value)}
             >
                 {pokemon.raw.abilities.map((a) => {
                     return (
@@ -26,14 +29,12 @@ function Modal_ability({ pokemon }) {
                     )
                 })}
             </select>
-            {current_ability === undefined ? (
-                <div>No ability selected</div>
-            ) : (
-                <div>
-                    Ability name: {current_ability.name}, ability description:
-                    {current_ability.description}
-                </div>
-            )}
+            <p>
+                Ability name: {abilityName}
+                <br />
+                Ability description:
+                {abilityDesc}
+            </p>
         </div>
     )
 }
