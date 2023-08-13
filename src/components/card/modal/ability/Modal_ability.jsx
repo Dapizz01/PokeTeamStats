@@ -11,7 +11,10 @@ function Modal_ability({ pokemon }) {
     useEffect(() => {
         async function fetchAbility() {
             const result = await pokedex.getAbilityByName(abilityName)
-            setAbilityDesc(result.effect_entries[0].short_effect)
+            let en_entry = result.effect_entries.filter(
+                (entry) => entry.language.name == 'en'
+            )
+            setAbilityDesc(en_entry[0].short_effect)
         }
         fetchAbility()
     }, [abilityName])

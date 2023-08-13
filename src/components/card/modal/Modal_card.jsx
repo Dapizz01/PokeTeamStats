@@ -1,9 +1,11 @@
 import React from 'react'
-import Modal_stats from './Modal_stats'
-import Modal_ability from './Modal_ability'
+import Modal_stats from './stats/Modal_stats'
+import Modal_ability from './ability/Modal_ability'
+import Modal_move_container from './move/Modal_move_container'
 
 function Modal_card({ pokemon, update_pokemon }) {
     // TODO: info da mettere: immagine, nome, tipi, abilità, stats, mosse
+    console.log(pokemon)
     return (
         <>
             <form method="dialog" className="modal-box">
@@ -21,15 +23,21 @@ function Modal_card({ pokemon, update_pokemon }) {
                         <h2>{pokemon.raw.name}</h2>
                         <div>Types</div>
                         <Modal_stats stats={pokemon.raw.stats}></Modal_stats>
-                        <Modal_ability pokemon={pokemon}></Modal_ability>
-                        <div>Moves</div>
+                        <Modal_ability
+                            pokemon={pokemon}
+                            key={pokemon.id + 'ability'}
+                        ></Modal_ability>
+                        <Modal_move_container
+                            pokemon={pokemon}
+                            key={pokemon.id + 'move'}
+                        ></Modal_move_container>
                     </div>
                 </div>
             </form>
             <form
                 method="dialog"
                 className="modal-backdrop"
-                onClick={() => update_pokemon(pokemon)}
+                /*onClick={() => update_pokemon(pokemon)}*/
             >
                 <button>close</button>
             </form>
