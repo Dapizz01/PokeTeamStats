@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Compact_card({ pokemon, delete_card, focus }) {
+function CompactCard({ pokemon, focus }) {
     return (
         <div className="card card-side basis-full sm:basis-1/2 md:basis-1/3 xl:basis-1/4 2xl:basis-1/6 h-1/4 hover:scale-110 ease-out duration-500">
             <figure
@@ -35,4 +35,4 @@ function Compact_card({ pokemon, delete_card, focus }) {
     )
 }
 
-export default Compact_card
+export default CompactCard

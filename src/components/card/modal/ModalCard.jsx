@@ -1,9 +1,9 @@
 import React from 'react'
-import Modal_stats from './stats/Modal_stats'
-import Modal_ability from './ability/Modal_ability'
-import Modal_move_container from './move/Modal_move_container'
+import ModalStats from './stats/ModalStats'
+import ModalAbility from './ability/ModalAbility'
+import ModalMoveContainer from './move/ModalMoveContainer'
 
-function Modal_card({ pokemon, update_pokemon }) {
+function ModalCard({ pokemon, update_pokemon }) {
     // TODO: info da mettere: immagine, nome, tipi, abilità, stats, mosse
     console.log(pokemon)
     return (
@@ -22,15 +22,15 @@ function Modal_card({ pokemon, update_pokemon }) {
                     <div>
                         <h2>{pokemon.raw.name}</h2>
                         <div>Types</div>
-                        <Modal_stats stats={pokemon.raw.stats}></Modal_stats>
-                        <Modal_ability
+                        <ModalStats stats={pokemon.raw.stats}></ModalStats>
+                        <ModalAbility
                             pokemon={pokemon}
                             key={pokemon.id + 'ability'}
-                        ></Modal_ability>
-                        <Modal_move_container
+                        ></ModalAbility>
+                        <ModalMoveContainer
                             pokemon={pokemon}
                             key={pokemon.id + 'move'}
-                        ></Modal_move_container>
+                        ></ModalMoveContainer>
                     </div>
                 </div>
             </form>
@@ -45,4 +45,4 @@ function Modal_card({ pokemon, update_pokemon }) {
     )
 }
 
-export default Modal_card
+export default ModalCard

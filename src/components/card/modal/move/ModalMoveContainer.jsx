@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import Modal_move from './Modal_move'
+import ModalMove from './ModalMove'
 
-function Modal_move_container({ pokemon }) {
+function ModalMoveContainer({ pokemon }) {
     const [selectedMoves, setSelectedMoves] = useState([])
     const moves = pokemon.raw.moves.map((move) => {
         return move.move.name
@@ -10,16 +10,16 @@ function Modal_move_container({ pokemon }) {
         <div>
             {[0, 1, 2, 3].map((index) => {
                 return (
-                    <Modal_move
+                    <ModalMove
                         moves={moves}
                         selectedMoves={selectedMoves}
                         setSelectedMoves={setSelectedMoves}
                         key={pokemon.id + 'move' + index}
-                    ></Modal_move>
+                    ></ModalMove>
                 )
             })}
         </div>
     )
 }
 
-export default Modal_move_container
+export default ModalMoveContainer

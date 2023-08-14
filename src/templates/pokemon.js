@@ -3,11 +3,7 @@ export default class Pokemon {
         this.id = self.crypto.randomUUID()
         this.raw = raw
         this.name = name
-        if (ability === null) {
-            this.ability = raw.abilities[0].ability.name
-        } else {
-            this.ability = ability
-        }
+        this.ability = ability
         this.item = item
         this.moves = moves
     }

@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Modal_stats({ stats }) {
+function ModalStats({ stats }) {
     const max_stats = {
         hp: 255,
         attack: 180,
@@ -30,4 +30,4 @@ function Modal_stats({ stats }) {
     )
 }
 
-export default Modal_stats
+export default ModalStats

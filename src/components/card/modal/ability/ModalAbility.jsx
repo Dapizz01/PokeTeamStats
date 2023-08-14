@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import * as Pokedex from 'pokeapi-js-wrapper'
 
-function Modal_ability({ pokemon }) {
+function ModalAbility({ pokemon }) {
     const selectRef = useRef(null)
     const pokedex = new Pokedex.Pokedex()
     const [abilityName, setAbilityName] = useState(pokemon.ability)
@@ -42,4 +42,4 @@ function Modal_ability({ pokemon }) {
     )
 }
 
-export default Modal_ability
+export default ModalAbility

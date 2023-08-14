@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Input_showdown(props) {
+function InputShowdown(props) {
     return (
         <div className="flex-auto">
             <textarea
@@ -11,4 +11,4 @@ function Input_showdown(props) {
     )
 }
 
-export default Input_showdown
+export default InputShowdown

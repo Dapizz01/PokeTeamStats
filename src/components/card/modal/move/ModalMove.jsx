@@ -1,7 +1,7 @@
 import * as Pokedex from 'pokeapi-js-wrapper'
 import React, { useRef, useState } from 'react'
 
-function Modal_move({ moves, setSelected, setSelectedMoves }) {
+function ModalMove({ moves, setSelected, setSelectedMoves }) {
     const selectRef = useRef(null)
     const [move, setMove] = useState(null)
     const pokedex = new Pokedex.Pokedex()
@@ -39,4 +39,4 @@ function Modal_move({ moves, setSelected, setSelectedMoves }) {
     )
 }
 
-export default Modal_move
+export default ModalMove
