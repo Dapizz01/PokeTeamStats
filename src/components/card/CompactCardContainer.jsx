@@ -8,6 +8,11 @@ function CompactCardContainer() {
     const [focused, setFocused] = useState()
     const modal = useRef()
 
+    const open_modal = (pokemon) => {
+        setFocused(pokemon)
+        modal.current.showModal()
+    }
+
     return (
         <>
             <div>
@@ -24,7 +29,9 @@ function CompactCardContainer() {
                 </div>
             </div>
             <dialog className="modal" ref={modal}>
-                {focused ? <ModalCard pokemon={focused}></ModalCard> : null}
+                {focused ? (
+                    <ModalCard pokemon_id={focused} key={focused}></ModalCard>
+                ) : null}
             </dialog>
         </>
     )

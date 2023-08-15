@@ -8,13 +8,13 @@ import CompactCardContainer from './components/card/CompactCardContainer'
 
 function App() {
     // TODO: Mettere ASSOLUTAMENTE context e reducer
-    const [focused, setFocused] = useState()
+    /*const [focused, setFocused] = useState()
     const modal = useRef()
 
     const open_modal = (pokemon) => {
         setFocused(pokemon)
         modal.current.showModal()
-    }
+    }*/
 
     return (
         <PokemonsProvider>
