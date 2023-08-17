@@ -11,6 +11,18 @@ export function usePokemonsDispatch() {
     return useContext(PokemonsDispatchContext)
 }
 
+/* export function getPokemonByID(pokemon_id) {
+    const pokemonsContext = usePokemons()
+    const result = pokemonsContext.filter(
+        (pokemon) => pokemon.id === pokemon_id
+    )
+    if (result.length == 0) {
+        throw Error(
+            'Pokemon with id ' + pokemon_id + ' not found in the context'
+        )
+    } else return result[0]
+} */
+
 function pokemonsReducer(pokemons, action) {
     switch (action.type) {
         case 'addPokemon':
@@ -29,7 +41,7 @@ function pokemonsReducer(pokemons, action) {
         case 'setMove':
             return pokemons.map((pokemon) => {
                 if (pokemon.id === action.pokemon_id) {
-                    pokemon.move[action.move_index] = action.move
+                    pokemon.moves[action.moveIndex] = action.move
                     return pokemon
                 } else {
                     return pokemon

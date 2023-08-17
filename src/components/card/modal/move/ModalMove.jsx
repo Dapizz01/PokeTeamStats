@@ -1,12 +1,26 @@
 import * as Pokedex from 'pokeapi-js-wrapper'
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
+import { usePokemonsDispatch } from '../../../context/PokemonContext'
 
-function ModalMove({ moves, setSelected, setSelectedMoves }) {
+function ModalMove({ current_move, moves, index, pokemon_id }) {
     const selectRef = useRef(null)
-    const [move, setMove] = useState(null)
+    const [move, setMove] = useState('')
     const pokedex = new Pokedex.Pokedex()
+    const pokemonDispatch = usePokemonsDispatch()
 
-    async function fetch_move(moveName) {
+    useEffect(() => {
+        if (move !== '') {
+            fetchMove()
+            pokemonDispatch({
+                type: 'setMove',
+                pokemon_id: pokemon_id,
+                move: move,
+                moveIndex: index,
+            })
+        }
+    }, [move])
+
+    async function fetchMove(moveName) {
         const result = await pokedex.getMoveByName(moveName)
         /* let en_entry = result.effect_entries.filter(
             (entry) => entry.language.name == 'en'
@@ -14,18 +28,31 @@ function ModalMove({ moves, setSelected, setSelectedMoves }) {
         setMove(result)
     }
 
+    function moveList() {
+        if (current_move !== null) {
+            return moves
+        } else {
+            return ['', ...moves]
+        }
+    }
+
     return (
         <div>
             <select
                 className="select select-bordered"
                 ref={selectRef}
-                onChange={() => fetch_move(selectRef.current.value)}
+                defaultValue={current_move}
+                onChange={() => setMove(selectRef.current.value)}
             >
-                {['', ...moves].map((moveName) => {
-                    return <option key={moveName}>{moveName}</option>
+                {moveList().map((moveName) => {
+                    if (moveName === '') {
+                        return <option key={moveName} hidden></option>
+                    } else {
+                        return <option key={moveName}>{moveName}</option>
+                    }
                 })}
             </select>
-            {move !== null && (
+            {move !== '' && (
                 <div>
                     <div>Type: {move.type.name}</div>
                     <div>Power: {move.power}</div>

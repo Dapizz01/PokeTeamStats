@@ -15,7 +15,6 @@ function InputSingle() {
             setPokemonNames(result)
         }
         fetchPokemonNames()
-        console.log(pokemonNames)
     }, [])
 
     const addPokemon = async (pokemonName) => {

@@ -1,6 +1,16 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { getPokemonByID, usePokemons } from '../../../context/PokemonContext'
+import Loading from '../../../Loading'
 
-function ModalStats({ stats }) {
+function ModalStats({ pokemon_id }) {
+    const pokemons = usePokemons()
+    const [pokemon, setPokemon] = useState(undefined)
+
+    useEffect(() => {
+        const result = pokemons.filter((p) => p.id === pokemon_id)[0]
+        setPokemon(result)
+    }, [])
+
     const max_stats = {
         hp: 255,
         attack: 180,
@@ -12,20 +22,24 @@ function ModalStats({ stats }) {
 
     return (
         <>
-            {stats.map((stat) => {
-                return (
-                    <div className="w-full" key={stat.stat.name}>
-                        <span>{stat.stat.name}</span>
-                        <progress
-                            className="progress"
-                            value={stat.base_stat}
-                            max={max_stats[stat.stat.name]}
-                        >
-                            {stat.base_stat}
-                        </progress>
-                    </div>
-                )
-            })}
+            {pokemon === undefined ? (
+                <Loading></Loading>
+            ) : (
+                pokemon.raw.stats.map((stat) => {
+                    return (
+                        <div className="w-full" key={stat.stat.name}>
+                            <span>{stat.stat.name}</span>
+                            <progress
+                                className="progress"
+                                value={stat.base_stat}
+                                max={max_stats[stat.stat.name]}
+                            >
+                                {stat.base_stat}
+                            </progress>
+                        </div>
+                    )
+                })
+            )}
         </>
     )
 }
