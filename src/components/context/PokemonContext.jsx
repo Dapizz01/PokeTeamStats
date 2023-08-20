@@ -11,7 +11,7 @@ export function usePokemonsDispatch() {
     return useContext(PokemonsDispatchContext)
 }
 
-/* export function getPokemonByID(pokemon_id) {
+export function getPokemonByID(pokemon_id) {
     const pokemonsContext = usePokemons()
     const result = pokemonsContext.filter(
         (pokemon) => pokemon.id === pokemon_id
@@ -21,7 +21,7 @@ export function usePokemonsDispatch() {
             'Pokemon with id ' + pokemon_id + ' not found in the context'
         )
     } else return result[0]
-} */
+}
 
 function pokemonsReducer(pokemons, action) {
     switch (action.type) {
@@ -33,19 +33,15 @@ function pokemonsReducer(pokemons, action) {
             return pokemons.map((pokemon) => {
                 if (pokemon.id === action.pokemon_id) {
                     pokemon.ability = action.ability
-                    return pokemon
-                } else {
-                    return pokemon
                 }
+                return pokemon
             })
         case 'setMove':
             return pokemons.map((pokemon) => {
                 if (pokemon.id === action.pokemon_id) {
                     pokemon.moves[action.moveIndex] = action.move
-                    return pokemon
-                } else {
-                    return pokemon
                 }
+                return pokemon
             })
         default:
             throw Error('Reducer received an unknown action.')

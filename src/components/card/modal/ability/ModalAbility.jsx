@@ -1,93 +1,116 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { Suspense, useEffect, useRef, useState } from 'react'
 import * as Pokedex from 'pokeapi-js-wrapper'
 import {
     usePokemonsDispatch,
     usePokemons,
 } from '../../../context/PokemonContext'
+import Loading from '../../../Loading'
+import Select from 'react-select'
 
 function ModalAbility({ pokemon_id }) {
-    const selectRef = useRef(null)
-    const pokedex = new Pokedex.Pokedex()
-    const pokemonsDispatch = usePokemonsDispatch()
     const pokemonsContext = usePokemons()
-    const [ability, setAbility] = useState(null)
-    const [abilityList, setAbilityList] = useState([])
+    const [abilityDetails, setAbilityDetails] = useState(null)
+    const [abilityList, setAbilityList] = useState([{ value: '', label: '' }])
 
     // TODO: fare un custom hook useFetch seguendo questo: https://blog.bitsrc.io/fetching-data-in-react-using-hooks-c6fdd71cb24a
     // TODO: fixare tutto, con loading spinner e gestione abilities
     useEffect(() => {
         const pokemon = pokemonsContext.filter((p) => p.id === pokemon_id)[0]
+        const abilities = pokemon.raw.abilities.map((a) => ({
+            value: a.ability.name,
+            label: a.ability.name,
+        }))
         if (pokemon.ability === null) {
-            setAbilityList(
-                '',
-                ...pokemon.raw.abilities.map((a) => a.ability.name)
-            )
+            setAbilityList([...abilities])
         } else {
-            setAbility(pokemon.ability)
-            setAbilityList(pokemon.raw.abilities.map((a) => a.ability.name))
-        }
-        /* if (abilityName !== null) {
-            fetchAbility()
-            pokemonsDispatch({
-                type: 'setAbility',
-                pokemon_id: pokemon_id,
-                ability: abilityName,
+            setAbilityList(abilities)
+            setAbilityDetails({
+                type: 'all',
+                ability: pokemon.ability,
             })
-        } */
+        }
     }, [])
 
-    async function fetchAbility() {
-        const result = await pokedex.getAbilityByName(abilityName)
-        let en_entry = result.effect_entries.filter(
-            (entry) => entry.language.name == 'en'
-        )
-        setAbilityDesc(en_entry[0].short_effect)
+    function updateAbility(option) {
+        setAbilityDetails({
+            type: 'name',
+            name: option.label,
+        })
     }
-
-    function getAbilityDescription() {
-        if (ability !== null) {
-            let en_entry = result.effect_entries.filter(
-                (entry) => entry.language.name == 'en'
-            )
-            return en_entry[0].short_effect
-        }
-    }
-
-    /* function abilityList() {
-        if (current_ability !== null) {
-            return abilities
-        } else {
-            return ['', ...abilities]
-        }
-    } */
 
     return (
         <div>
-            <select
-                className="select select-bordered"
-                ref={selectRef}
-                defaultValue={current_ability}
-                onChange={() => setAbilityName(selectRef.current.value)}
-            >
-                {abilityList().map((a) => {
-                    if (a === '') {
-                        return <option key={a} hidden></option>
-                    } else {
-                        return (
-                            <option key={a.ability.name}>
-                                {a.ability.name}
-                            </option>
-                        )
-                    }
-                })}
-            </select>
-            <p>
-                Ability name: {abilityName}
-                <br />
-                Ability description:
-                {getAbilityDescription()}
-            </p>
+            <Select
+                options={abilityList}
+                onChange={updateAbility}
+                value={
+                    abilityDetails === null
+                        ? { value: '', label: '' }
+                        : abilityDetails.type === 'name'
+                        ? {
+                              value: abilityDetails.name,
+                              label: abilityDetails.name,
+                          }
+                        : {
+                              value: abilityDetails.ability.name,
+                              label: abilityDetails.ability.name,
+                          }
+                }
+            ></Select>
+            <Suspense fallback={<Loading />}>
+                <ModalAbilityDetails
+                    pokemon_id={pokemon_id}
+                    abilityDetails={abilityDetails}
+                ></ModalAbilityDetails>
+            </Suspense>
         </div>
+    )
+}
+
+function ModalAbilityDetails({ pokemon_id, abilityDetails }) {
+    const pokedex = new Pokedex.Pokedex()
+    const pokemonsDispatch = usePokemonsDispatch()
+    const [ability, setAbility] = useState(null)
+
+    useEffect(() => {
+        if (abilityDetails !== null) {
+            if (abilityDetails.type == 'name') {
+                fetchAbility(abilityDetails.name)
+            } else {
+                setAbility(abilityDetails.ability)
+            }
+        }
+    }, [abilityDetails])
+
+    async function fetchAbility(abilityName) {
+        const result = await pokedex.getAbilityByName(abilityName)
+        pokemonsDispatch({
+            type: 'setAbility',
+            pokemon_id: pokemon_id,
+            ability: result,
+        })
+        setAbility(result)
+    }
+
+    function getAbilityDescription() {
+        let en_entry = ability.effect_entries.filter(
+            (entry) => entry.language.name == 'en'
+        )
+        return en_entry[0].short_effect
+    }
+
+    return (
+        <>
+            {ability === null ? (
+                <div>No ability selected</div>
+            ) : (
+                <div>
+                    Ability name: {ability.name}
+                    <br />
+                    Ability description: {getAbilityDescription()}
+                </div>
+            )}
+        </>
     )
 }
 
